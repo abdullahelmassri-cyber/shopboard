@@ -4,10 +4,12 @@ import { products } from "./products.js";
 const grid = document.querySelector("#product-grid");
 const searchInput = document.querySelector("#search");
 const categorySelect = document.querySelector("#category");
+const sortSelect = document.querySelector("#sort");
 
 const state = {
   search: "",
   category: "all",
+  sort: "default",
 };
 
 function renderCategoryOptions() {
@@ -34,11 +36,23 @@ function renderProducts(list) {
 
 function getVisibleProducts() {
   const query = state.search.trim().toLowerCase();
-  return products.filter((product) => {
+
+  // filter() returns a NEW array, so `products` is never changed
+  const result = products.filter((product) => {
     const matchesSearch = product.name.toLowerCase().includes(query);
     const matchesCategory = state.category === "all" || product.category === state.category;
     return matchesSearch && matchesCategory;
   });
+
+  // sort() changes the array it is called on. That is safe here because
+  // `result` is our own copy. "default" skips the sort, so the original order stays.
+  if (state.sort === "asc") {
+    result.sort((a, b) => a.price - b.price);
+  } else if (state.sort === "desc") {
+    result.sort((a, b) => b.price - a.price);
+  }
+
+  return result;
 }
 
 function render() {
@@ -52,6 +66,11 @@ searchInput.addEventListener("input", (event) => {
 
 categorySelect.addEventListener("change", (event) => {
   state.category = event.target.value;
+  render();
+});
+
+sortSelect.addEventListener("change", (event) => {
+  state.sort = event.target.value;
   render();
 });
 
