@@ -2,6 +2,11 @@ import "./style.css";
 import { products } from "./products.js";
 
 const grid = document.querySelector("#product-grid");
+const searchInput = document.querySelector("#search");
+
+const state = {
+  search: "",
+};
 
 function renderProducts(list) {
   grid.innerHTML = list
@@ -17,4 +22,18 @@ function renderProducts(list) {
     .join("");
 }
 
-renderProducts(products);
+function getVisibleProducts() {
+  const query = state.search.trim().toLowerCase();
+  return products.filter((product) => product.name.toLowerCase().includes(query));
+}
+
+function render() {
+  renderProducts(getVisibleProducts());
+}
+
+searchInput.addEventListener("input", (event) => {
+  state.search = event.target.value;
+  render();
+});
+
+render();
