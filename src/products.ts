@@ -1,4 +1,6 @@
-export const products = [
+import type { Product } from "./types";
+
+export const products: Product[] = [
   { id: 1, name: "Leather Tote Bag", category: "Bags", price: 89 },
   { id: 2, name: "Canvas Backpack", category: "Bags", price: 49 },
   { id: 3, name: "Mini Crossbody Bag", category: "Bags", price: 39 },

@@ -1,8 +1,13 @@
-export function getCategories(products) {
+import type { CatalogState, Product } from "./types";
+
+export function getCategories(products: Product[]): string[] {
   return [...new Set(products.map((product) => product.category))];
 }
 
-export function getVisibleProducts(products, { search, category, sort }) {
+export function getVisibleProducts(
+  products: Product[],
+  { search, category, sort }: CatalogState,
+): Product[] {
   const query = search.trim().toLowerCase();
 
   // filter() returns a NEW array, so the original `products` is never changed

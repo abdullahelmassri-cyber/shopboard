@@ -1,20 +1,21 @@
 import "./style.css";
-import { products } from "./products.js";
-import { getCategories, getVisibleProducts } from "./catalog.js";
-import * as cart from "./cart.js";
-import * as ui from "./ui.js";
+import { products } from "./products";
+import { getCategories, getVisibleProducts } from "./catalog";
+import * as cart from "./cart";
+import * as ui from "./ui";
+import type { CatalogState } from "./types";
 
-const state = {
+const state: CatalogState = {
   search: "",
   category: "all",
   sort: "default",
 };
 
-function renderCatalog() {
+function renderCatalog(): void {
   ui.renderProducts(getVisibleProducts(products, state));
 }
 
-function renderCart() {
+function renderCart(): void {
   ui.renderCart(cart.getCartLines(), cart.getCartCount(), cart.getCartTotal());
 }
 

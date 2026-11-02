@@ -10,11 +10,15 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit",
     "prepare": "husky"
   },
   "lint-staged": {
     "*.js": [
       "eslint --fix",
+      "prettier --write"
+    ],
+    "*.ts": [
       "prettier --write"
     ],
     "*.{html,css,md,json}": [
@@ -28,6 +32,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",
     "prettier": "^3.9.10",
+    "typescript": "^7.0.2",
     "vite": "^8.3.5"
   }
 }

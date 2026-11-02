@@ -1,15 +1,16 @@
-import { products } from "./products.js";
+import { products } from "./products";
+import type { CartItem, CartLine, Product } from "./types";
 
 const CART_KEY = "shopboard-cart";
 
-function loadCart() {
+function loadCart(): CartItem[] {
   try {
-    const saved = JSON.parse(localStorage.getItem(CART_KEY));
+    const saved: unknown = JSON.parse(localStorage.getItem(CART_KEY) ?? "null");
     if (!Array.isArray(saved)) return [];
     return saved.filter(
-      (item) =>
-        products.some((product) => product.id === item.id) &&
-        Number.isInteger(item.quantity) &&
+      (item): item is CartItem =>
+        products.some((product) => product.id === item?.id) &&
+        Number.isInteger(item?.quantity) &&
         item.quantity > 0,
     );
   } catch {
@@ -17,9 +18,9 @@ function loadCart() {
   }
 }
 
-let cart = loadCart();
+let cart: CartItem[] = loadCart();
 
-function saveCart() {
+function saveCart(): void {
   try {
     localStorage.setItem(CART_KEY, JSON.stringify(cart));
   } catch {
@@ -27,11 +28,13 @@ function saveCart() {
   }
 }
 
-function getProduct(id) {
-  return products.find((product) => product.id === id);
+function getProduct(id: number): Product {
+  const product = products.find((item) => item.id === id);
+  if (!product) throw new Error(`Unknown product id: ${id}`);
+  return product;
 }
 
-export function addToCart(id) {
+export function addToCart(id: number): void {
   const existing = cart.find((item) => item.id === id);
   if (existing) {
     existing.quantity += 1;
@@ -41,7 +44,7 @@ export function addToCart(id) {
   saveCart();
 }
 
-export function changeQuantity(id, change) {
+export function changeQuantity(id: number, change: number): void {
   const item = cart.find((line) => line.id === id);
   if (!item) return;
   item.quantity += change;
@@ -51,17 +54,17 @@ export function changeQuantity(id, change) {
   saveCart();
 }
 
-export function removeFromCart(id) {
+export function removeFromCart(id: number): void {
   cart = cart.filter((item) => item.id !== id);
   saveCart();
 }
 
-export function clearCart() {
+export function clearCart(): void {
   cart = [];
   saveCart();
 }
 
-export function getCartLines() {
+export function getCartLines(): CartLine[] {
   return cart.map((item) => {
     const product = getProduct(item.id);
     return {
@@ -74,10 +77,10 @@ export function getCartLines() {
   });
 }
 
-export function getCartCount() {
+export function getCartCount(): number {
   return cart.reduce((sum, item) => sum + item.quantity, 0);
 }
 
-export function getCartTotal() {
+export function getCartTotal(): number {
   return cart.reduce((sum, item) => sum + getProduct(item.id).price * item.quantity, 0);
 }
