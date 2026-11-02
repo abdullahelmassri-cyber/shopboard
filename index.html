@@ -12,6 +12,7 @@
       <nav aria-label="Main">
         <ul class="nav-list">
           <li><a href="#products">Shop</a></li>
+          <li><a href="#cart">Cart</a></li>
           <li><a href="#register">Sign up</a></li>
         </ul>
       </nav>
@@ -42,6 +43,13 @@
           </select>
         </div>
         <div class="grid" id="product-grid"></div>
+      </section>
+
+      <section id="cart" class="cart-panel" aria-labelledby="cart-title">
+        <h2 id="cart-title">Your cart</h2>
+        <div id="cart-items"></div>
+        <p class="cart-total">Total: $<span id="cart-total">0</span></p>
+        <button type="button" id="clear-cart">Clear cart</button>
       </section>
 
       <section id="register" class="register" aria-labelledby="register-title">

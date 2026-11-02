@@ -8,6 +8,9 @@ const searchInput = document.querySelector("#search");
 const categorySelect = document.querySelector("#category");
 const sortSelect = document.querySelector("#sort");
 const cartCount = document.querySelector("#cart-count");
+const cartItems = document.querySelector("#cart-items");
+const cartTotal = document.querySelector("#cart-total");
+const clearCartButton = document.querySelector("#clear-cart");
 
 const state = {
   search: "",
@@ -30,10 +33,22 @@ function loadCart() {
   }
 }
 
-const cart = loadCart();
+let cart = loadCart();
 
 function saveCart() {
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
+}
+
+function getProduct(id) {
+  return products.find((product) => product.id === id);
+}
+
+function getCartCount() {
+  return cart.reduce((sum, item) => sum + item.quantity, 0);
+}
+
+function getCartTotal() {
+  return cart.reduce((sum, item) => sum + getProduct(item.id).price * item.quantity, 0);
 }
 
 function addToCart(id) {
@@ -43,16 +58,27 @@ function addToCart(id) {
   } else {
     cart.push({ id, quantity: 1 });
   }
-  saveCart();
-  renderCartCount();
+  updateCart();
 }
 
-function getCartCount() {
-  return cart.reduce((sum, item) => sum + item.quantity, 0);
+function changeQuantity(id, change) {
+  const item = cart.find((line) => line.id === id);
+  if (!item) return;
+  item.quantity += change;
+  if (item.quantity <= 0) {
+    cart = cart.filter((line) => line.id !== id);
+  }
+  updateCart();
 }
 
-function renderCartCount() {
-  cartCount.textContent = getCartCount();
+function removeFromCart(id) {
+  cart = cart.filter((item) => item.id !== id);
+  updateCart();
+}
+
+function clearCart() {
+  cart = [];
+  updateCart();
 }
 
 function renderCategoryOptions() {
@@ -75,6 +101,42 @@ function renderProducts(list) {
         </article>`,
     )
     .join("");
+}
+
+function renderCart() {
+  if (cart.length === 0) {
+    cartItems.innerHTML = `<p>Your cart is empty.</p>`;
+  } else {
+    cartItems.innerHTML = `<ul class="cart-list">${cart
+      .map((item) => {
+        const product = getProduct(item.id);
+        return `
+          <li class="cart-item">
+            <span class="cart-item-name">${product.name}</span>
+            <span>$${product.price} each</span>
+            <span class="cart-qty">
+              <button type="button" data-action="decrease" data-id="${item.id}" aria-label="Decrease quantity of ${product.name}">−</button>
+              <span>${item.quantity}</span>
+              <button type="button" data-action="increase" data-id="${item.id}" aria-label="Increase quantity of ${product.name}">+</button>
+            </span>
+            <span>$${product.price * item.quantity}</span>
+            <button type="button" data-action="remove" data-id="${item.id}" aria-label="Remove ${product.name} from cart">Remove</button>
+          </li>`;
+      })
+      .join("")}</ul>`;
+  }
+  cartTotal.textContent = getCartTotal();
+  clearCartButton.disabled = cart.length === 0;
+}
+
+function renderCartCount() {
+  cartCount.textContent = getCartCount();
+}
+
+function updateCart() {
+  saveCart();
+  renderCartCount();
+  renderCart();
 }
 
 function getVisibleProducts() {
@@ -120,6 +182,19 @@ grid.addEventListener("click", (event) => {
   addToCart(Number(button.dataset.id));
 });
 
+cartItems.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-action]");
+  if (!button) return;
+  const id = Number(button.dataset.id);
+  const action = button.dataset.action;
+
+  if (action === "increase") changeQuantity(id, 1);
+  if (action === "decrease") changeQuantity(id, -1);
+  if (action === "remove") removeFromCart(id);
+});
+
+clearCartButton.addEventListener("click", clearCart);
+
 renderCategoryOptions();
 render();
-renderCartCount();
+updateCart();
