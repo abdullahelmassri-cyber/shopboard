@@ -3,12 +3,15 @@ export type Product = {
   name: string;
   category: string;
   price: number;
+  image: string;
 };
 
 export type CartItem = {
   id: number;
   quantity: number;
 };
+
+export type Cart = CartItem[];
 
 export type CartLine = {
   id: number;
@@ -25,3 +28,7 @@ export type CatalogState = {
   category: string;
   sort: SortOption;
 };
+
+export function isSortOption(value: string): value is SortOption {
+  return value === "default" || value === "asc" || value === "desc";
+}

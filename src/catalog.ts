@@ -10,7 +10,6 @@ export function getVisibleProducts(
 ): Product[] {
   const query = search.trim().toLowerCase();
 
-  // filter() returns a NEW array, so the original `products` is never changed
   const result = products.filter((product) => {
     const matchesSearch = product.name.toLowerCase().includes(query);
     const matchesCategory = category === "all" || product.category === category;

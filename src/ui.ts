@@ -1,5 +1,5 @@
 import type { CartLine, Product, SortOption } from "./types";
-
+import { isSortOption } from "./types";
 function getElement<T extends HTMLElement>(selector: string): T {
   const element = document.querySelector<T>(selector);
   if (!element) throw new Error(`Missing element: ${selector}`);
@@ -14,6 +14,8 @@ const cartCount = getElement<HTMLSpanElement>("#cart-count");
 const cartItems = getElement<HTMLDivElement>("#cart-items");
 const cartTotal = getElement<HTMLSpanElement>("#cart-total");
 const clearCartButton = getElement<HTMLButtonElement>("#clear-cart");
+const signupForm = getElement<HTMLFormElement>(".form");
+const signupStatus = getElement<HTMLParagraphElement>("#signup-status");
 
 type Handlers = {
   onSearch: (value: string) => void;
@@ -36,10 +38,15 @@ export function renderProducts(list: Product[]): void {
     .map(
       (product) => `
         <article class="card">
-          <h3>${product.name}</h3>
-          <p class="category">${product.category}</p>
-          <p class="price">$${product.price}</p>
-          <button type="button" data-id="${product.id}">Add to cart</button>
+          <img class="product-image" src="${product.image}" alt="${product.name}" loading="lazy" />
+          <div class="product-details">
+            <p class="category">${product.category}</p>
+            <h3>${product.name}</h3>
+            <div class="product-purchase">
+              <p class="price">$${product.price}</p>
+              <button type="button" data-id="${product.id}">Add to cart</button>
+            </div>
+          </div>
         </article>`,
     )
     .join("");
@@ -71,12 +78,13 @@ export function renderCart(lines: CartLine[], count: number, total: number): voi
   clearCartButton.disabled = lines.length === 0;
 }
 
-// Called ONCE at startup. The listeners live here, never inside a render function.
 export function bindEvents(handlers: Handlers): void {
   searchInput.addEventListener("input", () => handlers.onSearch(searchInput.value));
   categorySelect.addEventListener("change", () => handlers.onCategory(categorySelect.value));
-  sortSelect.addEventListener("change", () => handlers.onSort(sortSelect.value as SortOption));
-
+  sortSelect.addEventListener("change", () => {
+    const value = sortSelect.value;
+    if (isSortOption(value)) handlers.onSort(value);
+  });
   grid.addEventListener("click", (event) => {
     if (!(event.target instanceof Element)) return;
     const button = event.target.closest<HTMLButtonElement>("button[data-id]");
@@ -92,4 +100,8 @@ export function bindEvents(handlers: Handlers): void {
   });
 
   clearCartButton.addEventListener("click", handlers.onClear);
+  signupForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    signupStatus.hidden = false;
+  });
 }

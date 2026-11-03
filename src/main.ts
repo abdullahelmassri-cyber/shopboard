@@ -1,8 +1,16 @@
-import "./style.css";
+import "../style.css";
 import { products } from "./products";
 import { getCategories, getVisibleProducts } from "./catalog";
-import * as cart from "./cart";
-import * as ui from "./ui";
+import {
+  addToCart,
+  changeQuantity,
+  clearCart,
+  getCartCount,
+  getCartLines,
+  getCartTotal,
+  removeFromCart,
+} from "./cart";
+import { bindEvents, renderCart, renderCategoryOptions, renderProducts } from "./ui";
 import type { CatalogState } from "./types";
 
 const state: CatalogState = {
@@ -12,14 +20,14 @@ const state: CatalogState = {
 };
 
 function renderCatalog(): void {
-  ui.renderProducts(getVisibleProducts(products, state));
+  renderProducts(getVisibleProducts(products, state));
 }
 
-function renderCart(): void {
-  ui.renderCart(cart.getCartLines(), cart.getCartCount(), cart.getCartTotal());
+function renderCurrentCart(): void {
+  renderCart(getCartLines(), getCartCount(), getCartTotal());
 }
 
-ui.bindEvents({
+bindEvents({
   onSearch(value) {
     state.search = value;
     renderCatalog();
@@ -33,21 +41,21 @@ ui.bindEvents({
     renderCatalog();
   },
   onAdd(id) {
-    cart.addToCart(id);
-    renderCart();
+    addToCart(id);
+    renderCurrentCart();
   },
   onCartAction(action, id) {
-    if (action === "increase") cart.changeQuantity(id, 1);
-    if (action === "decrease") cart.changeQuantity(id, -1);
-    if (action === "remove") cart.removeFromCart(id);
-    renderCart();
+    if (action === "increase") changeQuantity(id, 1);
+    if (action === "decrease") changeQuantity(id, -1);
+    if (action === "remove") removeFromCart(id);
+    renderCurrentCart();
   },
   onClear() {
-    cart.clearCart();
-    renderCart();
+    clearCart();
+    renderCurrentCart();
   },
 });
 
-ui.renderCategoryOptions(getCategories(products));
+renderCategoryOptions(getCategories(products));
 renderCatalog();
-renderCart();
+renderCurrentCart();

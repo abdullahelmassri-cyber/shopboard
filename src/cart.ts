@@ -1,24 +1,31 @@
 import { products } from "./products";
-import type { CartItem, CartLine, Product } from "./types";
+import type { Cart, CartItem, CartLine, Product } from "./types";
 
 const CART_KEY = "shopboard-cart";
 
-function loadCart(): CartItem[] {
+function isCartItem(value: unknown): value is CartItem {
+  if (typeof value !== "object" || value === null) return false;
+  if (!("id" in value) || !("quantity" in value)) return false;
+
+  const { id, quantity } = value;
+  if (typeof id !== "number" || typeof quantity !== "number") return false;
+
+  return (
+    products.some((product) => product.id === id) && Number.isInteger(quantity) && quantity > 0
+  );
+}
+
+function loadCart(): Cart {
   try {
     const saved: unknown = JSON.parse(localStorage.getItem(CART_KEY) ?? "null");
     if (!Array.isArray(saved)) return [];
-    return saved.filter(
-      (item): item is CartItem =>
-        products.some((product) => product.id === item?.id) &&
-        Number.isInteger(item?.quantity) &&
-        item.quantity > 0,
-    );
+    return saved.filter(isCartItem);
   } catch {
     return [];
   }
 }
 
-let cart: CartItem[] = loadCart();
+let cart: Cart = loadCart();
 
 function saveCart(): void {
   try {
