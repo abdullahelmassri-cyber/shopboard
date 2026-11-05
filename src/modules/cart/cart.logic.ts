@@ -1,36 +1,8 @@
-import type { Cart, CartItem, CartLine, CatalogState, PriceRange, Product } from "./types";
+import type { Product } from "../products/products.types";
+import type { Cart, CartItem, CartLine } from "./cart.types";
 
-const ALL_CATEGORIES = "all";
 const INITIAL_CART_QUANTITY = 1;
 const MIN_CART_QUANTITY = 1;
-
-export function getCategories(products: readonly Product[]): string[] {
-  return [...new Set(products.map((product) => product.category))];
-}
-
-export function getVisibleProducts(
-  products: readonly Product[],
-  { search, category, sort }: CatalogState,
-  priceRange: PriceRange = {},
-): Product[] {
-  const query = search.trim().toLowerCase();
-
-  const result = products.filter((product) => {
-    const matchesSearch = product.name.toLowerCase().includes(query);
-    const matchesCategory = category === ALL_CATEGORIES || product.category === category;
-    const matchesMinimumPrice = priceRange.min === undefined || product.price >= priceRange.min;
-    const matchesMaximumPrice = priceRange.max === undefined || product.price <= priceRange.max;
-    return matchesSearch && matchesCategory && matchesMinimumPrice && matchesMaximumPrice;
-  });
-
-  if (sort === "asc") {
-    result.sort((first, second) => first.price - second.price);
-  } else if (sort === "desc") {
-    result.sort((first, second) => second.price - first.price);
-  }
-
-  return result;
-}
 
 export function addProductToCart(cart: readonly CartItem[], productId: number): Cart {
   const existingIndex = cart.findIndex((item) => item.id === productId);

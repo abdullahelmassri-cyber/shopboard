@@ -1,6 +1,12 @@
 import "../style.css";
-import { products } from "./data";
-import { getCategories, getVisibleProducts } from "./logic";
+import { products } from "./modules/products/products.data";
+import { getCategories, getVisibleProducts } from "./modules/products/products.logic";
+import {
+  bindProductEvents,
+  renderCategoryOptions,
+  renderProducts,
+} from "./modules/products/products.ui";
+import { bindCartEvents, renderCart } from "./modules/cart/cart.ui";
 import {
   addToCart,
   changeQuantity,
@@ -9,9 +15,9 @@ import {
   getCartLines,
   getCartTotal,
   removeFromCart,
-} from "./state";
-import { bindEvents, renderCart, renderCategoryOptions, renderProducts, showToast } from "./ui";
-import type { CatalogState } from "./types";
+} from "./modules/cart/cart.state";
+import { bindSignupForm } from "./modules/signup/signup.ui";
+import type { CatalogState } from "./modules/products/products.types";
 
 const QUANTITY_INCREMENT = 1;
 const QUANTITY_DECREMENT = -1;
@@ -22,6 +28,8 @@ const state: CatalogState = {
   sort: "default",
 };
 
+const categories = getCategories(products);
+
 function renderCatalog(): void {
   renderProducts(getVisibleProducts(products, state));
 }
@@ -30,7 +38,7 @@ function renderCurrentCart(): void {
   renderCart(getCartLines(), getCartCount(), getCartTotal());
 }
 
-bindEvents({
+bindProductEvents(categories, {
   onSearch(value) {
     state.search = value;
     renderCatalog();
@@ -46,8 +54,10 @@ bindEvents({
   onAdd(id) {
     addToCart(id);
     renderCurrentCart();
-    showToast("Added to cart.");
   },
+});
+
+bindCartEvents({
   onCartAction(action, id) {
     if (action === "increase") changeQuantity(id, QUANTITY_INCREMENT);
     if (action === "decrease") changeQuantity(id, QUANTITY_DECREMENT);
@@ -60,6 +70,8 @@ bindEvents({
   },
 });
 
-renderCategoryOptions(getCategories(products));
+bindSignupForm();
+
+renderCategoryOptions(categories);
 renderCatalog();
 renderCurrentCart();

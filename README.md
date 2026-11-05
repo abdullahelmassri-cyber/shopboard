@@ -23,12 +23,23 @@ Open the local URL printed by Vite, usually `http://localhost:5173`.
 index.html       Semantic page structure and sign-up form
 style.css        Responsive storefront styles
 src/
-  data.ts        Product catalog data
-  logic.ts       Pure catalog and cart calculations
-  state.ts       Cart state and local-storage persistence
-  ui.ts          DOM rendering, toast messages, and event listeners
-  main.ts        Application wiring and catalog choices
-  types.ts       Shared TypeScript types
+  main.ts                    Application wiring and catalog choices
+  modules/
+    products/
+      products.types.ts      Product and catalog types
+      products.data.ts       Product catalog data
+      products.logic.ts      Pure catalog search, filter, and sort
+      products.ui.ts         Catalog rendering and controls
+    cart/
+      cart.types.ts          Cart types
+      cart.logic.ts          Pure cart calculations and validation
+      cart.state.ts          Cart state and local-storage persistence
+      cart.ui.ts             Cart rendering and controls
+    signup/
+      signup.ui.ts           Sign-up form events and submission feedback
+  shared/
+    dom.ui.ts                Shared DOM lookup helper
+    toast.ui.ts              Shared toast messages
 DESIGN.md        Visual decisions and image references
 CLAUDE.md        Project-specific development rules
 debugging-log.md Notes on bugs found and their fixes

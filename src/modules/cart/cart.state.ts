@@ -1,4 +1,4 @@
-import { products } from "./data";
+import { products } from "../products/products.data";
 import {
   addProductToCart,
   changeCartQuantity,
@@ -7,8 +7,8 @@ import {
   getCartTotal as sumCartTotal,
   removeProductFromCart,
   validateCartData,
-} from "./logic";
-import type { Cart, CartLine } from "./types";
+} from "./cart.logic";
+import type { Cart, CartLine } from "./cart.types";
 
 const CART_STORAGE_KEY = "shopboard-cart";
 const EMPTY_CART: Cart = [];
