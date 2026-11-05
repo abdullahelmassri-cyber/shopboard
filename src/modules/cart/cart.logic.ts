@@ -1,4 +1,4 @@
-import type { Product } from "../products/products.types";
+import type { ProductDetails } from "../products/products.types";
 import type { Cart, CartItem, CartLine } from "./cart.types";
 
 const INITIAL_CART_QUANTITY = 1;
@@ -38,7 +38,7 @@ export function removeProductFromCart(cart: readonly CartItem[], productId: numb
 
 export function buildCartLines(
   cart: readonly CartItem[],
-  products: readonly Product[],
+  products: readonly ProductDetails[],
 ): CartLine[] {
   return cart.map((item) => {
     const product = getProduct(products, item.id);
@@ -58,17 +58,17 @@ export function countCartItems(cart: readonly CartItem[]): number {
 
 export function calculateCartTotal(
   cart: readonly CartItem[],
-  products: readonly Product[],
+  products: readonly ProductDetails[],
 ): number {
   return cart.reduce((sum, item) => sum + getProduct(products, item.id).price * item.quantity, 0);
 }
 
-export function validateCartData(value: unknown, products: readonly Product[]): Cart {
+export function validateCartData(value: unknown, products: readonly ProductDetails[]): Cart {
   if (!Array.isArray(value)) return [];
   return value.filter((item: unknown) => isValidCartItem(item, products));
 }
 
-function isValidCartItem(value: unknown, products: readonly Product[]): value is CartItem {
+function isValidCartItem(value: unknown, products: readonly ProductDetails[]): value is CartItem {
   if (typeof value !== "object" || value === null) return false;
   if (!("id" in value) || !("quantity" in value)) return false;
 
@@ -82,7 +82,7 @@ function isValidCartItem(value: unknown, products: readonly Product[]): value is
   );
 }
 
-function getProduct(products: readonly Product[], productId: number): Product {
+function getProduct(products: readonly ProductDetails[], productId: number): ProductDetails {
   const product = products.find((item) => item.id === productId);
   if (!product) throw new Error(`Unknown product id: ${productId}`);
   return product;

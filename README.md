@@ -29,6 +29,7 @@ src/
       products.types.ts      Product and catalog types
       products.data.ts       Product catalog data
       products.logic.ts      Pure catalog search, filter, and sort
+      products.api.ts        Product API validation and mapping
       products.ui.ts         Catalog rendering and controls
     cart/
       cart.types.ts          Cart types
@@ -38,6 +39,8 @@ src/
     signup/
       signup.ui.ts           Sign-up form events and submission feedback
   shared/
+    api/
+      client.ts              Shared fetch client and API errors
     dom.ui.ts                Shared DOM lookup helper
     toast.ui.ts              Shared toast messages
 DESIGN.md        Visual decisions and image references

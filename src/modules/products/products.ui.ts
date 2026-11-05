@@ -1,6 +1,6 @@
 import { getElement } from "../../shared/dom.ui";
 import { showToast } from "../../shared/toast.ui";
-import type { CatalogCategory, Category, Product, SortOption } from "./products.types";
+import type { CatalogCategory, CatalogProduct, Category, SortOption } from "./products.types";
 
 type CatalogHandlers = {
   onSearch: (value: string) => void;
@@ -25,7 +25,7 @@ export function renderCategoryOptions(categories: readonly Category[]): void {
   ].join("");
 }
 
-export function renderProducts(products: readonly Product[]): void {
+export function renderProducts(products: readonly CatalogProduct[]): void {
   productGrid.innerHTML = products
     .map(
       (product) => `
