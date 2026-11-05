@@ -1,5 +1,7 @@
 import type { CartLine, Product, SortOption } from "./types";
-import { isSortOption } from "./types";
+
+const TOAST_DURATION_MS = 4000;
+
 function getElement<T extends HTMLElement>(selector: string): T {
   const element = document.querySelector<T>(selector);
   if (!element) throw new Error(`Missing element: ${selector}`);
@@ -15,16 +17,36 @@ const cartItems = getElement<HTMLDivElement>("#cart-items");
 const cartTotal = getElement<HTMLSpanElement>("#cart-total");
 const clearCartButton = getElement<HTMLButtonElement>("#clear-cart");
 const signupForm = getElement<HTMLFormElement>(".form");
-const signupStatus = getElement<HTMLParagraphElement>("#signup-status");
+const toastContainer = getElement<HTMLDivElement>("#toasts");
+
+type CartAction = "increase" | "decrease" | "remove";
+type ToastType = "success" | "error";
 
 type Handlers = {
   onSearch: (value: string) => void;
   onCategory: (value: string) => void;
   onSort: (value: SortOption) => void;
   onAdd: (id: number) => void;
-  onCartAction: (action: string, id: number) => void;
+  onCartAction: (action: CartAction, id: number) => void;
   onClear: () => void;
 };
+
+function isSortOption(value: string): value is SortOption {
+  return value === "default" || value === "asc" || value === "desc";
+}
+
+function isCartAction(value: string | undefined): value is CartAction {
+  return value === "increase" || value === "decrease" || value === "remove";
+}
+
+export function showToast(message: string, type: ToastType = "success"): void {
+  const toast = document.createElement("div");
+  toast.className = `toast toast--${type}`;
+  toast.textContent = message;
+  toastContainer.append(toast);
+
+  window.setTimeout(() => toast.remove(), TOAST_DURATION_MS);
+}
 
 export function renderCategoryOptions(categories: string[]): void {
   categorySelect.innerHTML = [
@@ -78,6 +100,18 @@ export function renderCart(lines: CartLine[], count: number, total: number): voi
   clearCartButton.disabled = lines.length === 0;
 }
 
+async function submitSignup(): Promise<void> {
+  try {
+    // Simulate the unimplemented signup API returning an HTTP 500 response.
+    const response = await Promise.resolve({ ok: false, status: 500 });
+    if (!response.ok) throw new Error(`Request failed with status ${response.status}`);
+    showToast("Account created successfully.");
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Signup request failed.";
+    showToast(message, "error");
+  }
+}
+
 export function bindEvents(handlers: Handlers): void {
   searchInput.addEventListener("input", () => handlers.onSearch(searchInput.value));
   categorySelect.addEventListener("change", () => handlers.onCategory(categorySelect.value));
@@ -87,21 +121,26 @@ export function bindEvents(handlers: Handlers): void {
   });
   grid.addEventListener("click", (event) => {
     if (!(event.target instanceof Element)) return;
-    const button = event.target.closest<HTMLButtonElement>("button[data-id]");
+    const button = event.target.closest<HTMLButtonElement>("[data-id]");
     if (!button) return;
-    handlers.onAdd(Number(button.dataset.id));
+    const productId = Number(button.dataset.id);
+    if (Number.isInteger(productId)) handlers.onAdd(productId);
   });
 
   cartItems.addEventListener("click", (event) => {
     if (!(event.target instanceof Element)) return;
     const button = event.target.closest<HTMLButtonElement>("button[data-action]");
     if (!button) return;
-    handlers.onCartAction(String(button.dataset.action), Number(button.dataset.id));
+    const action = button.dataset.action;
+    const productId = Number(button.dataset.id);
+    if (isCartAction(action) && Number.isInteger(productId)) {
+      handlers.onCartAction(action, productId);
+    }
   });
 
   clearCartButton.addEventListener("click", handlers.onClear);
   signupForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    signupStatus.hidden = false;
+    void submitSignup();
   });
 }

@@ -1,6 +1,6 @@
 # ShopBoard
 
-ShopBoard is a responsive storefront demo built with Vite, TypeScript, semantic HTML, and CSS. It includes a searchable product catalog, category and price filters, and a shopping cart saved in browser local storage.
+ShopBoard is a responsive storefront demo built with Vite, TypeScript, semantic HTML, and CSS. It includes a searchable product catalog, category filtering, price sorting, and a shopping cart saved in browser local storage.
 
 The sign-up form demonstrates native browser validation. Account creation is not connected to a service, and the form reports that when submitted.
 
@@ -23,12 +23,12 @@ Open the local URL printed by Vite, usually `http://localhost:5173`.
 index.html       Semantic page structure and sign-up form
 style.css        Responsive storefront styles
 src/
-  cart.ts        Cart operations and local-storage persistence
-  catalog.ts     Product category, search, and sort logic
-  main.ts        Application state and event wiring
-  products.ts    Product catalog data
+  data.ts        Product catalog data
+  logic.ts       Pure catalog and cart calculations
+  state.ts       Cart state and local-storage persistence
+  ui.ts          DOM rendering, toast messages, and event listeners
+  main.ts        Application wiring and catalog choices
   types.ts       Shared TypeScript types
-  ui.ts          DOM rendering and event listeners
 DESIGN.md        Visual decisions and image references
 CLAUDE.md        Project-specific development rules
 debugging-log.md Notes on bugs found and their fixes

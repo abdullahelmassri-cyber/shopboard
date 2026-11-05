@@ -1,6 +1,6 @@
 import "../style.css";
-import { products } from "./products";
-import { getCategories, getVisibleProducts } from "./catalog";
+import { products } from "./data";
+import { getCategories, getVisibleProducts } from "./logic";
 import {
   addToCart,
   changeQuantity,
@@ -9,9 +9,12 @@ import {
   getCartLines,
   getCartTotal,
   removeFromCart,
-} from "./cart";
-import { bindEvents, renderCart, renderCategoryOptions, renderProducts } from "./ui";
+} from "./state";
+import { bindEvents, renderCart, renderCategoryOptions, renderProducts, showToast } from "./ui";
 import type { CatalogState } from "./types";
+
+const QUANTITY_INCREMENT = 1;
+const QUANTITY_DECREMENT = -1;
 
 const state: CatalogState = {
   search: "",
@@ -43,10 +46,11 @@ bindEvents({
   onAdd(id) {
     addToCart(id);
     renderCurrentCart();
+    showToast("Added to cart.");
   },
   onCartAction(action, id) {
-    if (action === "increase") changeQuantity(id, 1);
-    if (action === "decrease") changeQuantity(id, -1);
+    if (action === "increase") changeQuantity(id, QUANTITY_INCREMENT);
+    if (action === "decrease") changeQuantity(id, QUANTITY_DECREMENT);
     if (action === "remove") removeFromCart(id);
     renderCurrentCart();
   },

@@ -36,6 +36,47 @@ a {
   outline-offset: 3px;
 }
 
+.toast-container {
+  position: fixed;
+  z-index: 1000;
+  right: 20px;
+  bottom: 20px;
+  display: grid;
+  gap: 10px;
+  width: min(360px, calc(100vw - 40px));
+}
+
+.toast {
+  padding: 14px 16px;
+  border-left: 4px solid var(--forest);
+  background: var(--white);
+  box-shadow: 0 8px 24px rgb(32 44 38 / 16%);
+  color: var(--ink);
+  animation: toast-enter 180ms ease-out;
+}
+
+.toast--error {
+  border-left-color: var(--accent);
+}
+
+@keyframes toast-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    animation: none;
+  }
+}
+
 .site-header {
   display: flex;
   flex-wrap: wrap;

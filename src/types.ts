@@ -11,7 +11,7 @@ export type CartItem = {
   quantity: number;
 };
 
-export type Cart = CartItem[];
+export type Cart = readonly CartItem[];
 
 export type CartLine = {
   id: number;
@@ -29,6 +29,7 @@ export type CatalogState = {
   sort: SortOption;
 };
 
-export function isSortOption(value: string): value is SortOption {
-  return value === "default" || value === "asc" || value === "desc";
-}
+export type PriceRange = {
+  min?: number;
+  max?: number;
+};

@@ -13,7 +13,7 @@ ShopBoard uses a quiet, editorial retail style: an off-white canvas, forest-gree
 
 ## Image references
 
-The hero and product photos are Unsplash CDN images. Their URLs are kept with the page and product data in `index.html` and `src/products.ts`. The image requests use `auto=format`, fixed widths, and quality settings to request appropriately sized, compressed files. Images are remote and require a network connection.
+The hero and product photos are Unsplash CDN images. Their URLs are kept with the page and product data in `index.html` and `src/data.ts`. The image requests use `auto=format`, fixed widths, and quality settings to request appropriately sized, compressed files. Images are remote and require a network connection.
 
 - [Unsplash image library](https://unsplash.com/)
 - [Unsplash license](https://unsplash.com/license)
