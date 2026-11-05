@@ -2,7 +2,7 @@ import { ApiError, fetchJson } from "../../shared/api/client";
 import type { Category, Product } from "./products.types";
 
 const CENTS_PER_DOLLAR = 100;
-const INVALID_RESPONSE_STATUS = 200;
+const INVALID_RESPONSE_STATUS = 500;
 const PRODUCTS_PATH = "/api/products";
 
 interface ApiProduct {
@@ -25,12 +25,12 @@ function isApiProduct(value: unknown): value is ApiProduct {
   if (!isRecord(value)) return false;
 
   return (
-    typeof value.id === "number" &&
+    Number.isInteger(value.id) &&
     typeof value.title === "string" &&
     typeof value.category_name === "string" &&
     isCategory(value.category_name) &&
-    typeof value.price_cents === "number" &&
     Number.isInteger(value.price_cents) &&
+    typeof value.price_cents === "number" &&
     typeof value.in_stock === "boolean"
   );
 }
@@ -54,7 +54,11 @@ function parseProductsResponse(data: unknown): Product[] {
     throw new ApiError("Products response has an invalid shape", INVALID_RESPONSE_STATUS);
   }
 
-  return data.items.filter(isApiProduct).map(toProduct);
+  if (!data.items.every(isApiProduct)) {
+    throw new ApiError("Products response contains invalid product data", INVALID_RESPONSE_STATUS);
+  }
+
+  return data.items.map(toProduct);
 }
 
 export async function getProducts(): Promise<Product[]> {
