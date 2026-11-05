@@ -56,4 +56,4 @@ npm run build
 
 `npm run format` applies Prettier to project files. Husky runs lint-staged before commits. ESLint checks JavaScript configuration files; strict TypeScript and unused declarations are checked by `npm run typecheck`.
 
-Product and hero photos are served from Unsplash and require an internet connection. See [DESIGN.md](DESIGN.md) for design decisions and image-source references.
+The hero photo is served from Unsplash; product photos use Unsplash and Pexels. All images are remote and require an internet connection. See [DESIGN.md](DESIGN.md) for design decisions and image-source references.

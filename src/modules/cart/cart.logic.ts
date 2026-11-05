@@ -36,7 +36,10 @@ export function removeProductFromCart(cart: readonly CartItem[], productId: numb
   return cart.filter((item) => item.id !== productId);
 }
 
-export function getCartLines(cart: readonly CartItem[], products: readonly Product[]): CartLine[] {
+export function buildCartLines(
+  cart: readonly CartItem[],
+  products: readonly Product[],
+): CartLine[] {
   return cart.map((item) => {
     const product = getProduct(products, item.id);
     return {
@@ -49,11 +52,14 @@ export function getCartLines(cart: readonly CartItem[], products: readonly Produ
   });
 }
 
-export function getCartCount(cart: readonly CartItem[]): number {
+export function countCartItems(cart: readonly CartItem[]): number {
   return cart.reduce((sum, item) => sum + item.quantity, 0);
 }
 
-export function getCartTotal(cart: readonly CartItem[], products: readonly Product[]): number {
+export function calculateCartTotal(
+  cart: readonly CartItem[],
+  products: readonly Product[],
+): number {
   return cart.reduce((sum, item) => sum + getProduct(products, item.id).price * item.quantity, 0);
 }
 

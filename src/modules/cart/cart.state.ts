@@ -1,10 +1,10 @@
 import { products } from "../products/products.data";
 import {
   addProductToCart,
+  buildCartLines,
+  calculateCartTotal,
   changeCartQuantity,
-  getCartCount as countItems,
-  getCartLines as buildCartLines,
-  getCartTotal as sumCartTotal,
+  countCartItems,
   removeProductFromCart,
   validateCartData,
 } from "./cart.logic";
@@ -61,9 +61,9 @@ export function getCartLines(): CartLine[] {
 }
 
 export function getCartCount(): number {
-  return countItems(cart);
+  return countCartItems(cart);
 }
 
 export function getCartTotal(): number {
-  return sumCartTotal(cart, products);
+  return calculateCartTotal(cart, products);
 }

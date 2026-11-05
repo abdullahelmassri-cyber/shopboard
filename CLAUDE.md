@@ -46,6 +46,15 @@ src/
 
 The global stylesheet is `style.css` in the repository root.
 
+## Where a new feature goes
+
+- Put product catalog types, data, pure operations, and DOM rendering in the corresponding `modules/products/` files.
+- Put cart types, pure calculations, persistence, and DOM rendering in the corresponding `modules/cart/` files.
+- Give a new feature with UI its own `modules/<feature>/` folder, with only the files needed for real code and the same `<feature>.<role>.ts` naming pattern.
+- Put sign-up form behavior in `modules/signup/`.
+- Put code in `shared/` only when more than one module uses it; browser DOM helpers belong in `*.ui.ts`.
+- Connect modules and keep catalog choices in `main.ts`; do not put feature logic there.
+
 ## Architecture
 
 - `modules/products/products.types.ts` may define product and catalog types, including the `Category` union. It may not contain runtime logic or browser access.
@@ -69,3 +78,9 @@ The global stylesheet is `style.css` in the repository root.
 - Treat local-storage data as untrusted: validate each cart item and fall back to an empty cart if reading or parsing fails.
 - Use semantic HTML, one `h1`, associated form labels, and native input validation.
 - Keep TypeScript strict and do not use `any`, `as` type assertions, or non-null assertions.
+
+## Rules from mistakes I saw
+
+-
+-
+-

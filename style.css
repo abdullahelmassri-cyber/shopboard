@@ -6,7 +6,89 @@
   --white: #fff;
   --forest: #244337;
   --accent: #c85c43;
+
+  --color-button-hover: #315746;
+  --color-input-border: #cbd4cc;
+  --color-image-background: #e8ece6;
+  --color-cart-background: #e9eee9;
+  --color-cart-divider: #d2dbd3;
+  --color-clear-cart-border: #afbeb1;
+  --color-clear-cart-hover: #dfe8df;
+  --color-control-focus: #b9cec0;
+  --color-form-hint: #d4dfd6;
+  --color-signup-button: #f1c67c;
+  --color-signup-button-hover: #f6d69d;
+  --color-toast-shadow: rgb(32 44 38 / 16%);
+
+  --font-sans: "Avenir Next", Avenir, "Segoe UI", sans-serif;
+  --font-serif: Georgia, "Times New Roman", serif;
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-size-category: 0.74rem;
+  --font-size-eyebrow: 0.75rem;
+  --font-size-control: 0.82rem;
+  --font-size-footer: 0.85rem;
+  --font-size-navigation: 0.9rem;
+  --font-size-body: 1rem;
+  --font-size-hero-copy: 1.05rem;
+  --font-size-cart-total: 1.1rem;
+  --font-size-card-heading: 1.2rem;
+  --font-size-logo: 1.35rem;
+  --font-size-section-heading: 2rem;
+  --font-size-display: 3.25rem;
+  --font-size-display-wide: 4.25rem;
+  --line-height-body: 1.5;
+  --line-height-display: 1.02;
+
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-10: 10px;
+  --space-12: 12px;
+  --space-14: 14px;
+  --space-16: 16px;
+  --space-18: 18px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-28: 28px;
+  --space-32: 32px;
+  --space-36: 36px;
+  --space-40: 40px;
+  --space-42: 42px;
+  --space-48: 48px;
+  --space-56: 56px;
+  --space-68: 68px;
+
   --radius: 4px;
+  --border-width: 1px;
+  --control-outline-width: 2px;
+  --focus-outline-width: 3px;
+  --control-outline-offset: 1px;
+  --focus-outline-offset: 3px;
+  --content-max-width: 1260px;
+  --header-content-width: 1220px;
+  --toast-max-width: 360px;
+  --toast-z-index: 1000;
+  --toast-shadow-blur: 24px;
+  --hero-copy-max-width: 560px;
+  --hero-text-max-width: 400px;
+  --signup-form-max-width: 480px;
+  --signup-heading-max-width: 500px;
+  --control-height: 44px;
+  --product-action-height: 38px;
+  --cart-action-size: 32px;
+  --checkbox-size: 16px;
+  --hero-image-ratio: 1.2;
+  --hero-image-wide-ratio: 1.15;
+  --product-image-ratio: 4 / 3;
+  --image-hover-scale: 1.025;
+  --button-press-offset: 1px;
+  --toast-enter-offset: 8px;
+  --disabled-opacity: 0.5;
+  --toast-enter-duration: 180ms;
+  --control-transition-duration: 160ms;
+  --image-transition-duration: 240ms;
 }
 
 *,
@@ -21,8 +103,8 @@ html {
 
 body {
   margin: 0;
-  font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif;
-  line-height: 1.5;
+  font-family: var(--font-sans);
+  line-height: var(--line-height-body);
   color: var(--ink);
   background: var(--paper);
 }
@@ -32,27 +114,27 @@ a {
 }
 
 :focus-visible {
-  outline: 3px solid var(--accent);
-  outline-offset: 3px;
+  outline: var(--focus-outline-width) solid var(--accent);
+  outline-offset: var(--focus-outline-offset);
 }
 
 .toast-container {
   position: fixed;
-  z-index: 1000;
-  right: 20px;
-  bottom: 20px;
+  z-index: var(--toast-z-index);
+  right: var(--space-20);
+  bottom: var(--space-20);
   display: grid;
-  gap: 10px;
-  width: min(360px, calc(100vw - 40px));
+  gap: var(--space-10);
+  width: min(var(--toast-max-width), calc(100vw - var(--space-40)));
 }
 
 .toast {
-  padding: 14px 16px;
-  border-left: 4px solid var(--forest);
+  padding: var(--space-14) var(--space-16);
+  border-left: var(--space-4) solid var(--forest);
   background: var(--white);
-  box-shadow: 0 8px 24px rgb(32 44 38 / 16%);
+  box-shadow: 0 var(--space-8) var(--toast-shadow-blur) var(--color-toast-shadow);
   color: var(--ink);
-  animation: toast-enter 180ms ease-out;
+  animation: toast-enter var(--toast-enter-duration) ease-out;
 }
 
 .toast--error {
@@ -62,7 +144,7 @@ a {
 @keyframes toast-enter {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(var(--toast-enter-offset));
   }
 
   to {
@@ -82,31 +164,31 @@ a {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 12px 24px;
-  padding: 16px max(20px, calc((100% - 1220px) / 2));
-  border-bottom: 1px solid var(--line);
+  gap: var(--space-12) var(--space-24);
+  padding: var(--space-16) max(var(--space-20), calc((100% - var(--header-content-width)) / 2));
+  border-bottom: var(--border-width) solid var(--line);
   background: var(--white);
 }
 
 .logo {
   color: var(--forest);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.35rem;
-  font-weight: 700;
+  font-family: var(--font-serif);
+  font-size: var(--font-size-logo);
+  font-weight: var(--font-weight-bold);
   text-decoration: none;
 }
 
 .nav-list {
   display: flex;
   justify-content: space-between;
-  gap: 24px;
+  gap: var(--space-24);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .nav-list a {
-  font-size: 0.9rem;
+  font-size: var(--font-size-navigation);
   text-decoration: none;
 }
 
@@ -117,66 +199,66 @@ a {
 .cart {
   margin: 0 0 0 auto;
   color: var(--forest);
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: var(--font-size-navigation);
+  font-weight: var(--font-weight-bold);
 }
 
 main {
-  max-width: 1260px;
+  max-width: var(--content-max-width);
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 var(--space-20);
 }
 
 section {
-  padding: 48px 0;
+  padding: var(--space-48) 0;
 }
 
 .hero {
   display: grid;
-  gap: 28px;
+  gap: var(--space-28);
   align-items: center;
-  padding-top: 28px;
+  padding-top: var(--space-28);
 }
 
 .hero-copy {
-  padding: 16px 0;
+  padding: var(--space-16) 0;
 }
 
 .eyebrow {
-  margin: 0 0 16px;
+  margin: 0 0 var(--space-16);
   color: var(--accent);
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: var(--font-size-eyebrow);
+  font-weight: var(--font-weight-bold);
   text-transform: uppercase;
 }
 
 .hero h1,
 section h2 {
-  font-family: Georgia, "Times New Roman", serif;
-  font-weight: 400;
+  font-family: var(--font-serif);
+  font-weight: var(--font-weight-regular);
 }
 
 .hero h1 {
-  max-width: 560px;
-  margin: 0 0 16px;
-  font-size: 3.25rem;
-  line-height: 1.02;
+  max-width: var(--hero-copy-max-width);
+  margin: 0 0 var(--space-16);
+  font-size: var(--font-size-display);
+  line-height: var(--line-height-display);
 }
 
 .hero-copy > p:not(.eyebrow) {
-  max-width: 400px;
-  margin: 0 0 24px;
+  max-width: var(--hero-text-max-width);
+  margin: 0 0 var(--space-24);
   color: var(--muted);
-  font-size: 1.05rem;
+  font-size: var(--font-size-hero-copy);
 }
 
 .hero-image {
   display: block;
   width: 100%;
-  aspect-ratio: 1.2;
+  aspect-ratio: var(--hero-image-ratio);
   object-fit: cover;
   object-position: center 54%;
-  background: #e8ece6;
+  background: var(--color-image-background);
 }
 
 .button,
@@ -184,63 +266,63 @@ button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  min-height: 44px;
-  padding: 10px 16px;
+  gap: var(--space-12);
+  min-height: var(--control-height);
+  padding: var(--space-10) var(--space-16);
   border: 0;
   border-radius: var(--radius);
   font: inherit;
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: var(--font-size-navigation);
+  font-weight: var(--font-weight-semibold);
   color: var(--white);
   background: var(--forest);
   text-decoration: none;
   cursor: pointer;
   transition:
-    background-color 160ms ease,
-    transform 160ms ease;
+    background-color var(--control-transition-duration) ease,
+    transform var(--control-transition-duration) ease;
 }
 
 .button:hover,
 button:hover:not(:disabled) {
-  background: #315746;
+  background: var(--color-button-hover);
 }
 
 button:active {
-  transform: translateY(1px);
+  transform: translateY(var(--button-press-offset));
 }
 
 button:disabled {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: var(--disabled-opacity);
 }
 
 .products h2,
 .cart-panel h2,
 .register h2 {
-  margin: 0 0 20px;
-  font-size: 2rem;
+  margin: 0 0 var(--space-20);
+  font-size: var(--font-size-section-heading);
 }
 
 .controls {
   display: grid;
-  gap: 6px 12px;
-  margin-bottom: 28px;
+  gap: var(--space-6) var(--space-12);
+  margin-bottom: var(--space-28);
 }
 
 .controls label,
 .field label {
-  font-size: 0.82rem;
-  font-weight: 600;
+  font-size: var(--font-size-control);
+  font-weight: var(--font-weight-semibold);
 }
 
 .controls input,
 .controls select,
 .field input:not([type="checkbox"]) {
   width: 100%;
-  min-height: 44px;
-  padding: 10px 12px;
-  border: 1px solid #cbd4cc;
+  min-height: var(--control-height);
+  padding: var(--space-10) var(--space-12);
+  border: var(--border-width) solid var(--color-input-border);
   border-radius: var(--radius);
   font: inherit;
   color: var(--ink);
@@ -251,14 +333,14 @@ button:disabled {
 .controls select:focus,
 .field input:focus {
   border-color: var(--forest);
-  outline: 2px solid #b9cec0;
-  outline-offset: 1px;
+  outline: var(--control-outline-width) solid var(--color-control-focus);
+  outline-offset: var(--control-outline-offset);
 }
 
 .grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 32px 18px;
+  gap: var(--space-32) var(--space-18);
 }
 
 .card {
@@ -271,63 +353,63 @@ button:disabled {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-  background: #e8ece6;
-  transition: transform 240ms ease;
+  background: var(--color-image-background);
+  transition: transform var(--image-transition-duration) ease;
 }
 
 .card:hover .product-image {
-  transform: scale(1.025);
+  transform: scale(var(--image-hover-scale));
 }
 
 .product-details {
-  padding-top: 14px;
+  padding-top: var(--space-14);
 }
 
 .category {
-  margin: 0 0 4px;
+  margin: 0 0 var(--space-4);
   color: var(--muted);
-  font-size: 0.74rem;
-  font-weight: 600;
+  font-size: var(--font-size-category);
+  font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
 }
 
 .card h3 {
-  margin: 0 0 12px;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.2rem;
-  font-weight: 400;
+  margin: 0 0 var(--space-12);
+  font-family: var(--font-serif);
+  font-size: var(--font-size-card-heading);
+  font-weight: var(--font-weight-regular);
 }
 
 .product-purchase {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: var(--space-8);
 }
 
 .price {
   margin: 0;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
 }
 
 .product-purchase button {
-  min-height: 38px;
-  padding: 8px 12px;
-  font-size: 0.82rem;
+  min-height: var(--product-action-height);
+  padding: var(--space-8) var(--space-12);
+  font-size: var(--font-size-control);
 }
 
 .cart-panel {
-  padding: 28px 20px;
-  background: #e9eee9;
+  padding: var(--space-28) var(--space-20);
+  background: var(--color-cart-background);
 }
 
 .cart-panel h2 {
-  margin-bottom: 16px;
+  margin-bottom: var(--space-16);
 }
 
 .cart-list {
   display: grid;
-  gap: 12px;
+  gap: var(--space-12);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -337,107 +419,107 @@ button:disabled {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 10px 14px;
-  padding: 14px 0;
-  border-top: 1px solid #d2dbd3;
-  font-size: 0.9rem;
+  gap: var(--space-10) var(--space-14);
+  padding: var(--space-14) 0;
+  border-top: var(--border-width) solid var(--color-cart-divider);
+  font-size: var(--font-size-navigation);
 }
 
 .cart-item-name {
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
 }
 
 .cart-qty {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-8);
 }
 
 .cart-qty button {
-  width: 32px;
-  min-height: 32px;
+  width: var(--cart-action-size);
+  min-height: var(--cart-action-size);
   padding: 0;
-  font-size: 1rem;
+  font-size: var(--font-size-body);
 }
 
 .cart-item [data-action="remove"] {
-  min-height: 32px;
-  padding: 4px 8px;
+  min-height: var(--cart-action-size);
+  padding: var(--space-4) var(--space-8);
   color: var(--accent);
   background: transparent;
 }
 
 .cart-total {
-  margin: 18px 0;
-  font-size: 1.1rem;
-  font-weight: 700;
+  margin: var(--space-18) 0;
+  font-size: var(--font-size-cart-total);
+  font-weight: var(--font-weight-bold);
 }
 
 #clear-cart {
   color: var(--forest);
-  border: 1px solid #afbeb1;
+  border: var(--border-width) solid var(--color-clear-cart-border);
   background: transparent;
 }
 
 #clear-cart:hover:not(:disabled) {
-  background: #dfe8df;
+  background: var(--color-clear-cart-hover);
 }
 
 .register {
-  padding: 36px 24px;
+  padding: var(--space-36) var(--space-24);
   color: var(--white);
   background: var(--forest);
 }
 
 .register h2 {
-  max-width: 500px;
+  max-width: var(--signup-heading-max-width);
 }
 
 .form {
   display: grid;
-  gap: 16px;
-  max-width: 480px;
+  gap: var(--space-16);
+  max-width: var(--signup-form-max-width);
 }
 
 .field {
   display: grid;
-  gap: 6px;
+  gap: var(--space-6);
 }
 
 .field-check {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-8);
 }
 
 .field-check input {
-  width: 16px;
-  height: 16px;
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
   accent-color: var(--accent);
 }
 
 .hint {
   margin: 0;
-  color: #d4dfd6;
-  font-size: 0.82rem;
+  color: var(--color-form-hint);
+  font-size: var(--font-size-control);
 }
 
 .form button {
   justify-self: start;
   color: var(--forest);
-  background: #f1c67c;
+  background: var(--color-signup-button);
 }
 
 .form button:hover {
-  background: #f6d69d;
+  background: var(--color-signup-button-hover);
 }
 
 .site-footer {
-  max-width: 1260px;
+  max-width: var(--content-max-width);
   margin: 0 auto;
-  padding: 20px;
+  padding: var(--space-20);
   color: var(--muted);
-  font-size: 0.85rem;
+  font-size: var(--font-size-footer);
 }
 
 .site-footer p {
@@ -482,12 +564,12 @@ button:disabled {
 
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 36px 24px;
+    gap: var(--space-36) var(--space-24);
   }
 
   .cart-panel,
   .register {
-    padding: 36px;
+    padding: var(--space-36);
   }
 
   .cart-item {
@@ -498,12 +580,12 @@ button:disabled {
 @media (min-width: 900px) {
   .hero {
     grid-template-columns: 1fr 1fr;
-    gap: 48px;
-    padding: 56px 0 68px;
+    gap: var(--space-48);
+    padding: var(--space-56) 0 var(--space-68);
   }
 
   .hero h1 {
-    font-size: 4.25rem;
+    font-size: var(--font-size-display-wide);
   }
 
   .hero-image {
@@ -512,12 +594,12 @@ button:disabled {
 
   .grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 42px 28px;
+    gap: var(--space-42) var(--space-28);
   }
 
   .cart-panel,
   .register {
-    padding: 42px;
+    padding: var(--space-42);
   }
 }
 
