@@ -55,7 +55,7 @@ export const products: Product[] = [
     category: "Accessories",
     price: 25,
     image:
-      "https://images.unsplash.com/photo-1601924994987-69e26d50dc26?auto=format&fit=crop&w=900&q=80",
+      "https://images.pexels.com/photos/19814912/pexels-photo-19814912.jpeg?auto=compress&cs=tinysrgb&w=900",
   },
   {
     id: 8,
@@ -79,7 +79,7 @@ export const products: Product[] = [
     category: "Bags",
     price: 120,
     image:
-      "https://images.unsplash.com/photo-1565026057447-bc90a3dceb87?auto=format&fit=crop&w=900&q=80",
+      "https://images.pexels.com/photos/9582656/pexels-photo-9582656.jpeg?auto=compress&cs=tinysrgb&w=900",
   },
   {
     id: 11,
@@ -87,7 +87,7 @@ export const products: Product[] = [
     category: "Shoes",
     price: 60,
     image:
-      "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=900&q=80",
+      "https://images.pexels.com/photos/712883/pexels-photo-712883.jpeg?auto=compress&cs=tinysrgb&w=900",
   },
   {
     id: 12,
@@ -95,6 +95,6 @@ export const products: Product[] = [
     category: "Accessories",
     price: 30,
     image:
-      "https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1664286074240-d7059e004dff?auto=format&fit=crop&w=900&q=80",
   },
 ];
